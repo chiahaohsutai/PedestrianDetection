@@ -1,0 +1,10 @@
+.idea/
+.ipynb_checkpoints/
+OP_demo_model.ipynb
+basic_network_diagram.jpeg
+hourglassnet_broken_cell_error.ipynb
+mean_std.ipynb
+test1.ipynb
+test2.ipynb
+test3_object_proposal.ipynb
+.DS_Store
