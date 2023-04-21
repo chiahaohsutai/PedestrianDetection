@@ -8,3 +8,4 @@ test1.ipynb
 test2.ipynb
 test3_object_proposal.ipynb
 .DS_Store
+custom/__pycache__/
