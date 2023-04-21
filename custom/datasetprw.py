@@ -6,6 +6,7 @@ from scipy.io import loadmat
 import numpy as np
 from operator import itemgetter
 
+
 def generate_patch(scale=12):
     """Creates a heatmap using Gaussian Distribution."""
 
@@ -26,6 +27,7 @@ def generate_patch(scale=12):
     gaussian_patch = torch.mul(torch.exp(torch.div(torch.neg(torch.add(xmesh, ymesh)), denom)), scale)
 
     return gaussian_patch
+
 
 def make_heatmap_plural(width, height, keypoints, gau_patch):
     """Places a Gaussian Patch in the heatmap."""
@@ -84,6 +86,7 @@ def make_heatmap_plural(width, height, keypoints, gau_patch):
     # return the final heatmap as a tensor.
     return torch.FloatTensor(heatmap)
 
+
 class PrwHeatMaps(Dataset):
     """Creates a custom dataset with the PRW data."""
 
@@ -122,7 +125,13 @@ class PrwHeatMaps(Dataset):
 
         # load in the annotation.
         name = os.path.join(self.ann_path, name)
-        ann = loadmat(name)['box_new']
+        ann = loadmat(name)
+        if 'box_new' in ann.keys():
+            ann = ann['box_new']
+        elif 'anno_file' in ann.keys():
+            ann = ann['anno_file']
+        else:
+            raise ValueError("Invalid Annotation Error")
         # remove the first value of each set of bounding boxes.
         ann = [a[1:] for a in ann]
 
