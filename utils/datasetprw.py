@@ -126,12 +126,8 @@ class PrwHeatMaps(Dataset):
         # load in the annotation.
         name = os.path.join(self.ann_path, name)
         ann = loadmat(name)
-        if 'box_new' in ann.keys():
-            ann = ann['box_new']
-        elif 'anno_file' in ann.keys():
-            ann = ann['anno_file']
-        else:
-            raise ValueError("Invalid Annotation Error")
+        box_key = 'box_new' if 'box_new' in ann else 'anno_file' if 'anno_file' in ann else 'anno_previous'
+        ann = ann[box_key]
         # remove the first value of each set of bounding boxes.
         ann = [a[1:] for a in ann]
 
