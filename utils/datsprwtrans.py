@@ -65,9 +65,7 @@ class PRWTransfer(torch.utils.data.Dataset):
             ymin = (ymin/image_height)*416
             ymax = (ymax/image_height)*416
             coor = [xmin, ymin, xmax, ymax]
-            for ix, c in enumerate(coor):
-                coor[ix] = math.floor(c) if c > 1 else c
-                coor[ix] = math.ceil(c) if c < 0 else c
+            
             i[:] = coor
         bbox = np.array(bbox)
         # store boxes as a tensor.
