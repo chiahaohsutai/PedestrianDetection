@@ -65,11 +65,9 @@ class PRWTransfer(torch.utils.data.Dataset):
             ymin = (ymin/image_height)*416
             ymax = (ymax/image_height)*416
             coor = [xmin, ymin, xmax, ymax]
-            for idx, c in enumerate(coor):
-                if c > 1:
-                    coor[idx] = math.floor(c)
-                if c < 0:
-                    coor[idx] = math.ceil(c)
+            for ix, c in enumerate(coor):
+                coor[ix] = math.floor(c) if c > 1 else c
+                coor[ix] = math.ceil(c) if c < 0 else c
             i[:] = coor
         bbox = np.array(bbox)
         # store boxes as a tensor.
@@ -97,6 +95,13 @@ class PRWTransfer(torch.utils.data.Dataset):
             sample = self.transforms(image = img,
                                      bboxes = target['boxes'],
                                      labels = labels)
+            print(sample['bboxes'])
+            for i, b in enumerate(sample['bboxes']):
+                new = [0, 0, 0, 0]
+                for a in range(4):
+                    new[a] = math.floor(b[a]) if b[a] > 1 else b[a]
+                    new[a] = math.ceil(b[a]) if b[a] < 0 else b[a]
+                sample['bboxes'][i] = tuple(new)
             image_resized = sample['image']
             target['boxes'] = torch.Tensor(sample['bboxes'])
             
